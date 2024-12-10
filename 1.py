@@ -6,10 +6,9 @@ import numpy as np
 
 img=cv2.imread('hand1.jpeg')
 cv2.imshow('Origonal image' ,img)
-height, width = img.shape[:2]
-print(f"size of the image:{width}x{height}")
-pixel=img[100,100]
-print(f"Pixel value:{pixel}")
+edges=cv2.Canny(img, 100,200)
+cv2.imshow('Edge Detection', edges)
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
