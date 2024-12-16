@@ -6,6 +6,7 @@ import numpy as np
 
 img=cv2.imread('hand1.jpeg')
 cv2.imshow('Origonal image' ,img)
+cv2.imwrite('edges.jpeg', img)
 edges=cv2.Canny(img, 100,200)
 cv2.imshow('Edge Detection', edges)
 
