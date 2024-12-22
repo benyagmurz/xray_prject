@@ -25,19 +25,19 @@ class Widget(QWidget):
         self.ui.slider.valueChanged.connect(self.adjust_contrast)
 
         # Boyutlandırma slider
-        self.ui.slider.setMinimum(10)  # %10 minimum boyut
-        self.ui.slider.setMaximum(200)  # %200 maksimum boyut
-        self.ui.slider.setValue(100)  # Varsayılan %100 (orijinal boyut)
+        self.ui.slider.setMinimum(10) 
+        self.ui.slider.setMaximum(200)  
+        self.ui.slider.setValue(100)  
         self.ui.slider.valueChanged.connect(self.resize_image)
 
         # Blur efekti slider
         self.ui.blur_slider.setMinimum(1)  # Minimum kernel boyutu (1)
         self.ui.blur_slider.setMaximum(49)  # Maksimum kernel boyutu (49)
-        self.ui.blur_slider.setValue(1)  # Varsayılan kernel boyutu (1)
-        self.ui.blur_slider.setSingleStep(2)  # Sadece tek sayılar (1, 3, 5, ...)
+        self.ui.blur_slider.setValue(1)  
+        self.ui.blur_slider.setSingleStep(2)
         self.ui.blur_slider.valueChanged.connect(self.apply_blur)
 
-        # Buton bağlantıları
+        # Butonun basılınca çalışması için
         self.ui.button.clicked.connect(self.load_image)
 
     def load_image(self):
@@ -57,12 +57,26 @@ class Widget(QWidget):
                 self.ui.widget2.setStyleSheet("border-image:url(sonuc.png);")
             else:
                 print("Resim dosyası yüklenemedi.")
+    def match_image_sizes(self):
+            """Orijinal ve işlenmiş görüntü boyutlarını eşitle."""
+            if self.original_image is None:
+                return
+
+            target_size = (self.original_image.shape[1], self.original_image.shape[0])
+
+        
+            if self.processed_image is not None:
+                self.processed_image = cv2.resize(
+                self.processed_image,
+                target_size,
+                interpolation=cv2.INTER_AREA
+                )
 
     def adjust_contrast(self, value):
         """Kontrast ayarını değiştirir."""
         if self.original_image is None:
             return
-        contrast = value / 100  # Slider'daki değer [0-200], bunu [0.0-2.0] aralığına dönüştürüyoruz
+        contrast = value / 100  
         self.processed_image = cv2.convertScaleAbs(self.original_image, alpha=contrast, beta=0)
         self.display_image(self.processed_image, target="processed")
 
